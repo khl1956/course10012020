@@ -8,7 +8,7 @@ from WTForms import *
 
 app = Flask(__name__)
 app.secret_key = 'development key'
-app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://postgres:tiredHater27@localhost/testBase'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://postgres:tiredHATER@localhost/testBase'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 db = SQLAlchemy(app)
