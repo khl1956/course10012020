@@ -47,24 +47,20 @@ class Students(db.Model):
     first_name = db.Column('first_name', db.String(64), nullable=False)
     last_name = db.Column('last_name', db.String(64), nullable=False)
     study_book = db.Column('study_book', db.String(64), primary_key=True)
-    status = db.Column('status', db.String(64))
-    destiny = db.Column('destiny', db.String(64))
     group_code = db.Column('group_code', db.String(64), db.ForeignKey('groups.code'))
     subjectsheet = db.relationship('SubjectSheet', backref='students', lazy='dynamic')
 
-    def __init__(self, first_name, last_name, study_book, status, destiny, group_code):
+    def __init__(self, first_name, last_name, study_book, group_code):
 
         self.first_name = first_name
         self.last_name = last_name
         self.study_book = study_book
-        self.status = status
-        self.destiny = destiny
         self.group_code = group_code
 
     def __repr__(self):
 
-        return '<Student: first_name=%r; last_name=%r; study_book=%r; status=%r; destiny=%r; group_code=%r>' % \
-               self.first_name, self.last_name, self.study_book, self.status, self.destiny, self.group_code
+        return '<Student: first_name=%r; last_name=%r; study_book=%r; group_code=%r>' % \
+               self.first_name, self.last_name, self.study_book, self.group_code
 
 
 class SubjectSheet(db.Model):

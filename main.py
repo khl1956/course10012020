@@ -69,8 +69,7 @@ def students():
             flash('All fields are required.')
             return render_template('students.html', form=form)
         else:
-            student = Students(form.first_name.data, form.last_name.data, form.study_book.data,
-                           form.status.data, form.destiny.data, form.group_code.data)
+            student = Students(form.first_name.data, form.last_name.data, form.study_book.data, form.group_code.data)
             db.session.add(student)
             db.session.commit()
 

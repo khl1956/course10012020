@@ -20,8 +20,6 @@ class StudentsForm(Form):
     first_name = StringField("First name: ", [validators.data_required("Please, enter a first name of the student.")])
     last_name = StringField("Last name: ", [validators.data_required("Please, enter a last name of the student.")])
     study_book = StringField("Study book: ", [validators.data_required("Please, enter a study book of the student.")])
-    status = StringField("Status: ")
-    destiny = StringField("Destiny: ")
     group_code = StringField("Group code: ", [validators.data_required("Please, enter a group code of the student.")])
 
     submit = SubmitField("Enter")
