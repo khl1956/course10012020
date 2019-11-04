@@ -2,7 +2,12 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="824320e2-3fcd-4afa-b8c4-81972a852ab2" name="Default" comment="">
+      <change afterPath="$PROJECT_DIR$/templates/country.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/templates/country_insert.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ORM.py" beforeDir="false" afterPath="$PROJECT_DIR$/ORM.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WTForms.py" beforeDir="false" afterPath="$PROJECT_DIR$/WTForms.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/main.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -16,8 +21,8 @@
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
-        <option value="HTML File" />
         <option value="Python Script" />
+        <option value="HTML File" />
       </list>
     </option>
   </component>

@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Country Insert</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/bootstrap.min.css') }}">
+    <script src="{{ url_for('static', filename='js/jquery-3.4.1.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/bootstrap.min.js') }}"></script>
+</head>
+<body>
+
+<!-- D3.js -->
+<script src="https://d3js.org/d3.v5.min.js"></script>
+
+<script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
+<!-- Plotly.js -->
+<script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+
+<div class="container">
+
+    <h1>Country Insert</h1>
+
+    <form action = "/insert" method = post>
+       <fieldset>
+          <legend>CountryForm</legend>
+          {{ form.hidden_tag() }}
+
+          <div style = font-size:20px; font-weight:bold; margin-left:150px;>
+
+              <div>
+                  {{ form.first_name.label }}      {{ form.first_name }}
+                  {{ form.last_name.label }}      {{ form.last_name }}
+                  {{ form.study_book.label }}      {{ form.study_book }}
+                  {{ form.group_code.label }}      {{ form.group_code }}
+              </div>
+
+             {{ form.submit }}
+          </div>
+
+       </fieldset>
+    </form>
+
+</div>
+
+</body>
+</html>

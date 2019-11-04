@@ -13,6 +13,60 @@ app.config['SQLALCHEMY_DATABASE_URI'] = 'postgres://jvehmagztyojdu:50a71e72bae8b
 db = SQLAlchemy(app)
 
 
+@app.route('/get', methods=['GET'])
+def insert_trio():
+
+    row1 = Country('Ukraine', 35-000-000, 'парламентська', 1991)
+    row2 = Country('Russia', 200-000-000, 'унітарна', 1991)
+    row3 = Country('USSR', 200-000-000, 'унітарна', 1918)
+
+    select_res1 = Country.query.filter_by(name=row1.name)
+    if select_res1:
+        print("There is already inserted country")
+        return
+    select_res2 = Country.query.filter_by(name=row2.name)
+    if select_res2:
+        print("There is already inserted country")
+        return
+    select_res3 = Country.query.filter_by(name=row3.name)
+    if select_res3:
+        print("There is already inserted country")
+        return
+
+    db.session.add(row1)
+    db.session.add(row2)
+    db.session.add(row3)
+
+    db.session.commit()
+
+
+@app.route('/show', methods=['GET'])
+def show_countries():
+
+    select_result = Country.query.filter_by().all()
+
+    return render_template('country.html', data=select_result)
+
+
+@app.route('/insert', methods=['GET', 'POST'])
+def insert():
+
+    form = CountryForm()
+
+    if request.method == 'POST':
+        if not form.validate():
+            flash('Validation Error.')
+            return render_template('country_insert.html', form=form)
+        else:
+            country = Country(form.name.data, form.population.data, form.gov.data, form.year_creation.data)
+            db.session.add(country)
+            db.session.commit()
+
+    select_result = Country.query.filter_by().all()
+
+    return render_template('country.html', data=select_result)
+
+
 @app.route('/', methods=['GET', 'POST'])
 def index():
 
@@ -21,8 +75,6 @@ def index():
 
 @app.route('/groups', methods=['GET', 'POST'])
 def groups():
-
-    select_result = Groups.query.filter_by().all()
 
     form = GroupsForm()
 
@@ -35,13 +87,13 @@ def groups():
             db.session.add(group)
             db.session.commit()
 
+    select_result = Groups.query.filter_by().all()
+
     return render_template('groups.html', data=select_result, form=form)
 
 
 @app.route('/subjects', methods=['GET', 'POST'])
 def subjects():
-
-    select_result = Subjects.query.filter_by().all()
 
     form = SubjectsForm()
 
@@ -54,13 +106,13 @@ def subjects():
             db.session.add(subject)
             db.session.commit()
 
+    select_result = Subjects.query.filter_by().all()
+
     return render_template('subjects.html', data=select_result, form=form)
 
 
 @app.route('/students', methods=['GET', 'POST'])
 def students():
-
-    select_result = Students.query.filter_by().all()
 
     form = StudentsForm()
 
@@ -72,6 +124,8 @@ def students():
             student = Students(form.first_name.data, form.last_name.data, form.study_book.data, form.group_code.data)
             db.session.add(student)
             db.session.commit()
+
+    select_result = Students.query.filter_by().all()
 
     return render_template('students.html', data=select_result, form=form)
 

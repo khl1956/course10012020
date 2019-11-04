@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Country</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/bootstrap.min.css') }}">
+    <script src="{{ url_for('static', filename='js/jquery-3.4.1.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/bootstrap.min.js') }}"></script>
+</head>
+<body>
+
+<!-- D3.js -->
+<script src="https://d3js.org/d3.v5.min.js"></script>
+
+<script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
+<!-- Plotly.js -->
+<script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+
+<div class="container">
+
+    <h1>Countries</h1>
+
+    <form>
+       <fieldset>
+
+          <div style = font-size:20px; font-weight:bold; margin-left:150px;>
+
+              <div>
+                  {% for row in data %}
+                  <p>{{row.name, row.population, row.gov, row.year_creation}}</p>
+                  {% endfor %}
+              </div>
+          </div>
+
+       </fieldset>
+    </form>
+
+</div>
+
+</body>
+</html>

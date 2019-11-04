@@ -49,6 +49,7 @@ class Students(db.Model):
     study_book = db.Column('study_book', db.String(64), primary_key=True)
     group_code = db.Column('group_code', db.String(64), db.ForeignKey('groups.code'))
     subjectsheet = db.relationship('SubjectSheet', backref='students', lazy='dynamic')
+    country = db.realtionship('CountryStudent', backref='students', lazy='dynamic')
 
     def __init__(self, first_name, last_name, study_book, group_code):
 
@@ -125,3 +126,44 @@ class SubjectsMarks(db.Model):
 
         return '<SubjectsMarks: subj_name=%r; curr_max_mark=%r; actual_date=%r>' %\
                self.subj_name, self.curr_max_mark, self.actual_date
+
+
+class Country(db.Model):
+
+    __tablename__ = 'country'
+
+    name = db.Column('name', db.String(64), primary_key=True)
+    population = db.Column('population', db.Integer)
+    gov = db.Column('gov', db.String(64))
+    year_creation = db.Column('year_creation', db.Integer)
+    student = db.realtionship('CountryStudent', backref='country', lazy='dynamic')
+
+    def __init__(self, name, population, gov, year_creation):
+
+        self.name = name
+        self.population = population
+        self.gov = gov
+        self.year_creation = year_creation
+
+    def __repr__(self):
+
+        return '<Country: name=%r; population=%r; gov=%r; year_creation=%r>' %\
+               self.name, self.population, self.gov, self.year_creation
+
+
+class CountryStudent(db.Model):
+
+    __tablename__ = 'country_student'
+
+    country_name = db.Column('country_name', db.String(64), db.ForeignKey('country.name'), primary_key=True)
+    student_book = db.Column('student_book', db.String(64), db.ForeignKey('students.study_book'), primary_key=True)
+
+    def __init__(self, country_name, student_book):
+
+        self.country_name = country_name
+        self.student_book = student_book
+
+    def __repr__(self):
+
+        return '<CountryStudent: country_name=%r; student_book=%r>' % \
+               self.country_name, self.student_book
