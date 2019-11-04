@@ -1,4 +1,4 @@
-git add remote exam https://github.com/igortereshchenko/PATH_TO_PATH_TO_REPOSITORY
+git add remote exam https://github.com/igortereshchenko/PATH_TO_REPOSITORY
 
 You should use *--allow-unrelated-histories* parameter for merge data from different repos
 
