@@ -47,9 +47,9 @@ class Students(db.Model):
     first_name = db.Column('first_name', db.String(64), nullable=False)
     last_name = db.Column('last_name', db.String(64), nullable=False)
     study_book = db.Column('study_book', db.String(64), primary_key=True)
-    group_code = db.Column('group_code', db.String(64), db.ForeignKey('groups.code'))
+    group_code = db.Column('group_code', db.String(64), db.ForeignKey('groups.code'), primary_key=True)
     subjectsheet = db.relationship('SubjectSheet', backref='students', lazy='dynamic')
-    country = db.realtionship('CountryStudent', backref='students', lazy='dynamic')
+    country = db.relationship('CountryStudent', backref='students', lazy='dynamic')
 
     def __init__(self, first_name, last_name, study_book, group_code):
 
@@ -136,7 +136,7 @@ class Country(db.Model):
     population = db.Column('population', db.Integer)
     gov = db.Column('gov', db.String(64))
     year_creation = db.Column('year_creation', db.Integer)
-    student = db.realtionship('CountryStudent', backref='country', lazy='dynamic')
+    student = db.relationship('CountryStudent', backref='country', lazy='dynamic')
 
     def __init__(self, name, population, gov, year_creation):
 

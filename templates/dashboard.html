@@ -12,10 +12,6 @@
 
 <nav class="navbar navbar-expand-sm bg-dark navbar-dark">
 
-  <div class="navbar-header">
-        <a class="navbar-brand" href="https://github.com/BlindProrok/Lab2">Прізвище студента </a>  <!-- Посилання на репозиторій з кодом !-->
-  </div>
-
 <!-- D3.js -->
 <script src="https://d3js.org/d3.v5.min.js"></script>
 
@@ -40,6 +36,17 @@
 
 </div>
 
+<div id="input_div" class = "p-4">
+  <form action = "/dashboard" method = post>
+     <fieldset>
+         <legend>Plot parameters</legend>
+         <div style = font-size:20px; font-weight:bold; margin-left:150px;>
+           <p>Enter the last character of the groups for which you want to make a plot:</p>
+           <input name="last_char" type="text"> <input name="submit_char" value="Submit" type="submit">
+         </div>
+     </fieldset>
+  </form>
+</div>
 
 <script type="text/javascript">
 

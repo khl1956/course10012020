@@ -16,6 +16,18 @@ INSERT INTO SubjectSheet VALUES('Math', 'KM-61', 'KM6103', TO_DATE('28.10.19', '
 INSERT INTO SubjectSheet VALUES('English', 'KM-61', 'KM6103', TO_DATE('21.10.19', 'DD.MM.YY'), 100);
 INSERT INTO SubjectSheet VALUES('Ukrainian', 'KM-61', 'KM6103', TO_DATE('21.10.19', 'DD.MM.YY'), -200);
 
+INSERT INTO group_subject VALUES(2015, 1, 'KM-61', 'Math');
+INSERT INTO group_subject VALUES(2015, 1, 'KM-61', 'English');
+INSERT INTO group_subject VALUES(2015, 2, 'KM-61', 'English');
+
+INSERT INTO studentstatus VALUES('KM6103', 'handsome', 'scholarship', TO_DATE('11.11.19', 'DD.MM.YY'));
+INSERT INTO studentstatus VALUES('KM6200', 'good', 'otchislen', TO_DATE('11.11.19', 'DD.MM.YY'));
+INSERT INTO studentstatus VALUES('KM6250', 'handsome', 'dopobachennya', TO_DATE('11.11.19', 'DD.MM.YY'));
+
+INSERT INTO subjects_marks VALUES('Math', 10, TO_DATE('11.11.19', 'DD.MM.YY'));
+INSERT INTO subjects_marks VALUES('English', 50, TO_DATE('11.11.19', 'DD.MM.YY'));
+INSERT INTO subjects_marks VALUES('Economy', 40, TO_DATE('11.11.19', 'DD.MM.YY'));
+
 
 UPDATE Groups
 SET code = 'KM-64r'

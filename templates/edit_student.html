@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <title>Students</title>
+  <title>Student Editing</title>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/bootstrap.min.css') }}">
@@ -30,26 +30,20 @@
 
 <div class="container">
 
-    <h1>Students</h1>
+    <h1>Student</h1>
 
           <div>
-              {% for row in data %}
-                  <div class="border p-1 m-1">
-                      <form action = "/students" method = post>
-                          <p>
-                          {{row.first_name, row.last_name, row.study_book, row.group_code}}
-                            <button name="del" type="submit" class="mh-100 del" value="{{row.group_code}}█{{row.study_book}}">Delete</button>
-                            <button name="edit" type="submit" class="mh-100 edit" value="{{row.group_code}}█{{row.study_book}}">Edit</button>
-                          </p>
-                      </form>
-                  </div>
-              {% endfor %}
+              <div class="border p-1 m-1">
+                  <p>
+                  {{row.first_name, row.last_name, row.study_book, row.group_code}}
+                  </p>
+              </div>
           </div>
 
-    <form action = "/students" method = post>
+    <form action = "/edit_student" method = post>
+        {{form.hidden_tag()}}
        <fieldset>
-           {{ form.hidden_tag() }}
-           <legend>Add a Student</legend>
+           <legend>Edit the Student</legend>
            <div style = font-size:20px; font-weight:bold; margin-left:150px;>
               <div>
                   {{ form.first_name.label }}      {{ form.first_name }}
@@ -59,7 +53,7 @@
               </div>
 
              {{ form.submit }}
-          </div>
+           </div>
 
        </fieldset>
     </form>

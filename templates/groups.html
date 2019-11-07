@@ -12,10 +12,6 @@
 
 <nav class="navbar navbar-expand-sm bg-dark navbar-dark">
 
-  <div class="navbar-header">
-        <a class="navbar-brand" href="https://github.com/BlindProrok/Lab2">Прізвище студента </a>  <!-- Посилання на репозиторій з кодом !-->
-  </div>
-
 <!-- D3.js -->
 <script src="https://d3js.org/d3.v5.min.js"></script>
 
@@ -36,20 +32,25 @@
 
     <h1>Groups</h1>
 
+          <div>
+              {% for row in data %}
+                  <div class="border p-1 m-1">
+                      <form action = "/groups" method = post>
+                          <p>
+                          {{row.code}}
+                            <button name="del" type="submit" class="mh-100 del" value="{{row.code}}">Delete</button>
+                            <button name="edit" type="submit" class="mh-100 edit" value="{{row.code}}">Edit</button>
+                          </p>
+                      </form>
+                  </div>
+              {% endfor %}
+          </div>
+
     <form action = "/groups" method = post>
        <fieldset>
-          <legend>GroupForm</legend>
-          {{ form.hidden_tag() }}
-
-          <div style = font-size:20px; font-weight:bold; margin-left:150px;>
-
-              <div>
-                  {% for row in data %}
-                  <p>{{row.code}} <button type="submit" class="mh-100 del">Delete</button>
-                      <button type="submit" class="mh-100 edit">Edit</button> </p>
-                  {% endfor %}
-              </div>
-
+           {{ form.hidden_tag() }}
+           <legend>Add a Group</legend>
+           <div style = font-size:20px; font-weight:bold; margin-left:150px;>
               <div>
                   {{ form.code.label }}      {{ form.code }}
               </div>
