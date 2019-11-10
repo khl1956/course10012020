@@ -15,23 +15,22 @@ ADD CONSTRAINT name_fk FOREIGN KEY(subj_name) REFERENCES Subjects(name);
 CREATE TABLE Students(first_name text NOT NULL, last_name text NOT NULL,
 					  study_book text, group_code text);					 
 ALTER TABLE Students
-ADD CONSTRAINT spooky_bk PRIMARY KEY(study_book),
+ADD CONSTRAINT group_spooky_bk PRIMARY KEY(group_code, study_book),
 ADD CONSTRAINT group_code_fk FOREIGN KEY(group_code) REFERENCES Groups(code);
 
-CREATE TABLE StudentStatus(study_book text, status text,
+CREATE TABLE StudentStatus(group_code text, study_book text, status text,
 						   destiny text, actual_date DATE);
 ALTER TABLE StudentStatus
-ADD CONSTRAINT time_spooky_bk PRIMARY KEY(study_book, actual_date),
-ADD CONSTRAINT spooky_fk FOREIGN KEY(study_book) REFERENCES Students(study_book);
+ADD CONSTRAINT time_spooky_bk PRIMARY KEY(group_code, study_book, actual_date),
+ADD CONSTRAINT group_spooky_fk FOREIGN KEY(group_code, study_book) REFERENCES Students(group_code, study_book);
 
 CREATE TABLE SubjectSheet(subj_name text, group_code text, study_book text,
 						  date_of_mark DATE, mark numeric);
 ALTER TABLE SubjectSheet
 ADD CONSTRAINT time_group_spooky_subj_bk PRIMARY KEY(subj_name, group_code,
 											   study_book, date_of_mark),
-ADD CONSTRAINT group_code_fk FOREIGN KEY(group_code) REFERENCES Groups(code),
 ADD CONSTRAINT subj_name_fk FOREIGN KEY(subj_name) REFERENCES Subjects(name),
-ADD CONSTRAINT study_book_fk FOREIGN KEY(study_book) REFERENCES Students(study_book);
+ADD CONSTRAINT group_spooky_fk FOREIGN KEY(group_code, study_book) REFERENCES Students(group_code, study_book);
 
 CREATE TABLE Group_Subject(year int, semester int, group_code text, subj_name text);
 ALTER TABLE Group_Subject

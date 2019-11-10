@@ -25,13 +25,3 @@ class StudentsForm(Form):
     group_code = StringField("Group code: ", [validators.data_required("Please, enter a group code of the student.")])
 
     submit = SubmitField("Enter")
-
-
-class CountryForm(Form):
-
-    name = StringField("Country name: ", [validators.data_required("Please, enter a country name.")])
-    population = IntegerField("Population: ", [validators.number_range(0, )])
-    gov = StringField("Government type (унітарна, парламентська): ", [validators.any_of('унітарна', 'парламентська')])
-    year_creation = IntegerField("Year of creation: ")
-
-    submit = SubmitField("Enter")
