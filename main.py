@@ -9,6 +9,51 @@ from WTForms import *
 app.secret_key = 'development key'
 
 
+@app.route('/get', methods = ['GET'])
+def insert3():
+
+    hotel1 = Hotel('California', 1000, 'Lovely Place', 5)
+    hotel2 = Hotel('Plaza', 10000, 'New York', 5)
+    hotel3 = Hotel('Obschaga', 700, 'Kyiv', 6)
+
+    db.session.add(hotel1)
+    db.session.commit()
+    db.session.add(hotel2)
+    db.session.commit()
+    db.session.add(hotel3)
+    db.session.commit()
+
+    return 'Done!'
+
+
+@app.route('/show', methods=['GET'])
+def show():
+
+    select_result = Hotel.query.filter_by().all()
+
+    return render_template('show.html', data=select_result)
+
+
+@app.route('/insert', methods=['GET', 'POST'])
+def insert():
+
+    form = HotelForm()
+    select_result = Hotel.query.filter_by().all()
+
+    if request.method == 'POST':
+
+        if not form.validate():
+            flash('All fields are required.')
+            return render_template('insert.html', data=select_result, form=form)
+        else:
+            hotel = Hotel(form.name.data, form.avg_price.data, form.addr.data, form.star_count.data)
+            db.session.add(hotel)
+            db.session.commit()
+            select_result.append(hotel)
+
+    return render_template('insert.html', data=select_result, form=form)
+
+
 @app.route('/', methods=['GET', 'POST'])
 def index():
 

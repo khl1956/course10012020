@@ -40,27 +40,6 @@ class Subjects(db.Model):
         return 'Subject: name=%r' % self.name
 
 
-class Students(db.Model):
-
-    __tablename__ = 'students'
-    first_name = db.Column('first_name', db.String(64), nullable=False)
-    last_name = db.Column('last_name', db.String(64), nullable=False)
-    study_book = db.Column('study_book', db.String(64), primary_key=True)
-    group_code = db.Column('group_code', db.String(64), db.ForeignKey('groups.code'), primary_key=True)
-
-    def __init__(self, first_name, last_name, study_book, group_code):
-
-        self.first_name = first_name
-        self.last_name = last_name
-        self.study_book = study_book
-        self.group_code = group_code
-
-    def __repr__(self):
-
-        return '<Student: first_name=%r; last_name=%r; study_book=%r; group_code=%r>' % \
-               self.first_name, self.last_name, self.study_book, self.group_code
-
-
 class StudentStatus(db.Model):
 
     __tablename__ = 'studentstatus'
@@ -154,3 +133,48 @@ class SubjectsMarks(db.Model):
 
         return '<SubjectsMarks: subj_name=%r; curr_max_mark=%r; actual_date=%r>' %\
                self.subj_name, self.curr_max_mark, self.actual_date
+
+
+class Students(db.Model):
+
+    __tablename__ = 'students'
+    first_name = db.Column('first_name', db.String(64), nullable=False)
+    last_name = db.Column('last_name', db.String(64), nullable=False)
+    study_book = db.Column('study_book', db.String(64), primary_key=True)
+    group_code = db.Column('group_code', db.String(64), db.ForeignKey('groups.code'), primary_key=True)
+
+    def __init__(self, first_name, last_name, study_book, group_code):
+
+        self.first_name = first_name
+        self.last_name = last_name
+        self.study_book = study_book
+        self.group_code = group_code
+
+    def __repr__(self):
+
+        return '<Student: first_name=%r; last_name=%r; study_book=%r; group_code=%r>' % \
+               self.first_name, self.last_name, self.study_book, self.group_code
+
+
+class Hotel(db.Model):
+
+    __tablename__ = 'hotel'
+
+    name = db.Column('name', db.String(64), primary_key=True)
+    avg_price = db.Column('avg_price', db.Integer)
+    addr = db.Column('addr', db.String(64), primary_key=True)
+    star_count = db.Column('star_count', db.Integer)
+
+    def __init__(self, name, avg_price, addr, star_count):
+
+        self.name = name
+        self.avg_price = avg_price
+        self.addr = addr
+        self.star_count = star_count
+
+    def __repr__(self):
+
+        return '<Hotel: name=%r; avg_price=%r; addr=%r; star_count=%r>' % \
+               self.name, self.avg_price, self.addr, self.star_count
+
+db.create_all()

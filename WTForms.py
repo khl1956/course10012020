@@ -25,3 +25,13 @@ class StudentsForm(Form):
     group_code = StringField("Group code: ", [validators.data_required("Please, enter a group code of the student.")])
 
     submit = SubmitField("Enter")
+
+
+class HotelForm(Form):
+
+    name = StringField("Name: ", [validators.data_required("Please, enter a name of the hotel."), validators.Length(min=1)])
+    avg_price = IntegerField("Average Price: ", [validators.data_required("Please, enter an average price of the hotel."), validators.number_range(min=0)])
+    addr = StringField("Address: ", [validators.data_required("Please, enter an address of the hotel.")])
+    star_count = IntegerField("Star Count: ", [validators.data_required("Please, enter a star count of the hotel.")])
+
+    submit = SubmitField("Enter")
