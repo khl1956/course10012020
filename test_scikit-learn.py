@@ -10,11 +10,16 @@ colmap = {1: 'r', 2: 'g', 3: 'b'}
 
 from sklearn.cluster import KMeans
 
+print(df)
 kmeans = KMeans(n_clusters=3)
 kmeans.fit(df)
 
+print(df)
+
 labels = kmeans.predict(df)
+print(labels)
 centroids = kmeans.cluster_centers_
+print(centroids)
 
 fig = plt.figure(figsize=(5, 5))
 
@@ -23,6 +28,7 @@ colors = list(map(lambda x: colmap[x+1], labels))
 plt.scatter(df['x'], df['y'], color=colors, alpha=0.5, edgecolor='k')
 
 for idx, centroid in enumerate(centroids):
+    print(idx)
     plt.scatter(*centroid, color=colmap[idx+1])
 plt.xlim(0, 80)
 plt.ylim(0, 80)

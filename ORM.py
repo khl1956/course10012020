@@ -74,7 +74,7 @@ class SubjectSheet(db.Model):
     group_code = db.Column('group_code', db.String(64), db.ForeignKey('students.group_code'), primary_key=True)
     study_book = db.Column('study_book', db.String(64), db.ForeignKey('students.study_book'), primary_key=True)
     date_of_mark = db.Column('date_of_mark', db.Date, primary_key=True)
-    mark = db.Column('mark', db.Integer, nullable=False)
+    mark = db.Column('mark', db.Float, nullable=False)
     student_group = db.relationship('Students', backref='sheet_group', lazy=True,
                               foreign_keys=[group_code])
     student_spook = db.relationship('Students', backref='sheet_spook', lazy=True,

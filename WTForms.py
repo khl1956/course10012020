@@ -1,5 +1,5 @@
 from flask_wtf import Form
-from wtforms import StringField, IntegerField, SubmitField, DateField, Label
+from wtforms import StringField, FloatField, SubmitField, DateField, Label
 from wtforms import validators
 
 
@@ -33,6 +33,6 @@ class SubjectSheetForm(Form):
     group_code = StringField("Group code: ", [validators.data_required("Please, enter a group code of the student.")])
     study_book = StringField("Study book: ", [validators.data_required("Please, enter a study book of the student.")])
     date_of_mark = DateField("Date of Mark: ", [validators.data_required("Please, enter a date of the mark.")])
-    mark = IntegerField("Mark: ", [validators.data_required("Please, enter the mark.")])
+    mark = FloatField("Mark: ", [validators.data_required("Please, enter the mark.")])
 
     submit = SubmitField("Enter")
