@@ -3,7 +3,6 @@ import plotly.graph_objs as go
 import json
 
 import pandas as pd
-import matplotlib.pyplot as plt
 import numpy as np
 from sklearn.cluster import KMeans
 from math import e
@@ -44,7 +43,8 @@ def corr(subj1, subj2):
     x1 = corr_coef*y1
     x2 = corr_coef*y2
 
-    scatter = go.Scatter(x=x, y=y, marker=dict(color='rgb(122, 122, 122)'), mode='markers', name='Marks from English and Math')
+    scatter = go.Scatter(x=x, y=y, marker=dict(color='rgb(122, 122, 122)'), mode='markers',
+                         name='Marks from ' + subj1 + ' and ' + subj2)
     line = go.Scatter(x=[x1, x2], y=[y1, y2], marker=dict(color='rgb(50, 200, 200)'), mode='lines', name='Correlation')
 
     data = [scatter, line]
@@ -86,7 +86,7 @@ def predict(study_book):
     X = []
     for row in total_sheet:
         X.append(float(row.total))
-    X = [75, 75, 75]
+    X += [0, 0, 0]
     X = X[:3]
 
     PNN_data = [[21, 98, 11, 'bad'], [26, 40, 55, 'bad'], [29, 44, 52, 'bad'], [40, 90, 2, 'bad'],
