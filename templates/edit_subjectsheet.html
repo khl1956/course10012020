@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <title>Hotels</title>
+  <title>Subject Sheet Editing</title>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/bootstrap.min.css') }}">
@@ -23,6 +23,7 @@
     <li class="nav-item"><a class="nav-link" href="/groups">Groups</a></li>
     <li class="nav-item"><a class="nav-link" href="/subjects">Subjects</a></li>
     <li class="nav-item"><a class="nav-link" href="/students">Students</a></li>
+    <li class="nav-item"><a class="nav-link" href="/subjectsheet">SubjectSheet</a></li>
     <li class="nav-item"><a class="nav-link" href="/dashboard">Dashboard</a></li>
   </ul>
 
@@ -30,19 +31,34 @@
 
 <div class="container">
 
-    <h1>Hotels</h1>
+    <h1>SubjectSheet</h1>
 
           <div>
-              {% for row in data %}
-                  <div class="border p-1 m-1">
-                      <form action = "#" method = post>
-                          <p>
-                          {{row.name, row.avg_price, row.addr, row.star_count}}
-                          </p>
-                      </form>
-                  </div>
-              {% endfor %}
+              <div class="border p-1 m-1">
+                  <p>
+                  {{row.subj_name, row.group_code, row.study_book, row.date_of_mark, row.mark}}
+                  </p>
+              </div>
           </div>
+
+    <form action = "/edit_subjectsheet" method = post>
+        {{form.hidden_tag()}}
+       <fieldset>
+           <legend>Edit the Subject Sheet</legend>
+           <div style = font-size:20px; font-weight:bold; margin-left:150px;>
+              <div>
+                  {{ form.subj_name.label }}      {{ form.subj_name }}
+                  {{ form.group_code.label }}      {{ form.group_code }}
+                  {{ form.study_book.label }}      {{ form.study_book }}
+                  {{ form.date_of_mark.label }}      {{ form.date_of_mark }}
+                  {{ form.mark.label }}      {{ form.mark }}
+              </div>
+
+             {{ form.submit }}
+           </div>
+
+       </fieldset>
+    </form>
 
 </div>
 

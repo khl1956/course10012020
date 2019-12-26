@@ -73,7 +73,7 @@ class SubjectSheet(db.Model):
     subj_name = db.Column('subj_name', db.String(64), db.ForeignKey('subjects.name'), primary_key=True)
     group_code = db.Column('group_code', db.String(64), db.ForeignKey('students.group_code'), primary_key=True)
     study_book = db.Column('study_book', db.String(64), db.ForeignKey('students.study_book'), primary_key=True)
-    date_of_mark = db.Column('date_of_mark', db.Date, nullable=False)
+    date_of_mark = db.Column('date_of_mark', db.Date, primary_key=True)
     mark = db.Column('mark', db.Integer, nullable=False)
     student_group = db.relationship('Students', backref='sheet_group', lazy=True,
                               foreign_keys=[group_code])
@@ -154,27 +154,3 @@ class Students(db.Model):
 
         return '<Student: first_name=%r; last_name=%r; study_book=%r; group_code=%r>' % \
                self.first_name, self.last_name, self.study_book, self.group_code
-
-
-class Hotel(db.Model):
-
-    __tablename__ = 'hotel'
-
-    name = db.Column('name', db.String(64), primary_key=True)
-    avg_price = db.Column('avg_price', db.Integer)
-    addr = db.Column('addr', db.String(64), primary_key=True)
-    star_count = db.Column('star_count', db.Integer)
-
-    def __init__(self, name, avg_price, addr, star_count):
-
-        self.name = name
-        self.avg_price = avg_price
-        self.addr = addr
-        self.star_count = star_count
-
-    def __repr__(self):
-
-        return '<Hotel: name=%r; avg_price=%r; addr=%r; star_count=%r>' % \
-               self.name, self.avg_price, self.addr, self.star_count
-
-db.create_all()

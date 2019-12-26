@@ -23,6 +23,7 @@
     <li class="nav-item"><a class="nav-link" href="/groups">Groups</a></li>
     <li class="nav-item"><a class="nav-link" href="/subjects">Subjects</a></li>
     <li class="nav-item"><a class="nav-link" href="/students">Students</a></li>
+    <li class="nav-item"><a class="nav-link" href="/subjectsheet">SubjectSheet</a></li>
     <li class="nav-item"><a class="nav-link" href="/dashboard">Dashboard</a></li>
     <li class="nav-item"><a class="nav-link" href="https://www.youtube.com/watch?v=dQw4w9WgXcQ">Secret</a></li>
   </ul>
@@ -31,20 +32,9 @@
 
 <div class="container">
 
-  {% block content %}<h1>Hello!</h1>{% endblock %}
+  {% block content %}<h1 align="horizontal">Welcome!</h1>{% endblock %}
 
 </div>
-
-<div id="chart">
-
-</div>
-
-<script type="text/javascript">
-    var graphs = {{graphJSON | safe}};
-
-    Plotly.plot('chart', graphs, {});
-
-</script>
 
 </body>
 </html>

@@ -1,5 +1,5 @@
 from flask_wtf import Form
-from wtforms import StringField, IntegerField, SubmitField, Label
+from wtforms import StringField, IntegerField, SubmitField, DateField, Label
 from wtforms import validators
 
 
@@ -27,11 +27,12 @@ class StudentsForm(Form):
     submit = SubmitField("Enter")
 
 
-class HotelForm(Form):
+class SubjectSheetForm(Form):
 
-    name = StringField("Name: ", [validators.data_required("Please, enter a name of the hotel."), validators.Length(min=1)])
-    avg_price = IntegerField("Average Price: ", [validators.data_required("Please, enter an average price of the hotel."), validators.number_range(min=0)])
-    addr = StringField("Address: ", [validators.data_required("Please, enter an address of the hotel.")])
-    star_count = IntegerField("Star Count: ", [validators.data_required("Please, enter a star count of the hotel.")])
+    subj_name = StringField("Subject Name: ", [validators.data_required("Please, enter a name of the subject.")])
+    group_code = StringField("Group code: ", [validators.data_required("Please, enter a group code of the student.")])
+    study_book = StringField("Study book: ", [validators.data_required("Please, enter a study book of the student.")])
+    date_of_mark = DateField("Date of Mark: ", [validators.data_required("Please, enter a date of the mark.")])
+    mark = IntegerField("Mark: ", [validators.data_required("Please, enter the mark.")])
 
     submit = SubmitField("Enter")
