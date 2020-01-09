@@ -1,0 +1,47 @@
+{% extends "index2.html" %}
+
+{% block content %}
+
+
+
+ <div class="table-responsive">
+    <table class="table">
+        <thead>
+            <tr>
+                <th scope="col">Заліковка студента</th>
+                <th scope="col">Ім'я студента</th>
+                <th scope="col">Прізвище студента</th>
+                <th scope="col">Група</th>
+                <th scope="col">Середній бал</th>
+                <th scope="col">Проживання</th>
+                <th scope="col">Наявність стипендії</th>
+                <th scope="col">Вік</th>
+
+            </tr>
+        </thead>
+
+        <tbody>
+        {% for user in student %}
+        <tr>
+            <td> {{user.student_id }} </td>
+            <td> {{user.student_name}} </td>
+            <td> {{user.student_surname}} </td>
+            <td> {{user.student_group}} </td>
+            <td> {{user.student_mark}} </td>
+            <td> {{user.student_live}} </td>
+            <td> {{user.student_stup}} </td>
+            <td> {{user.student_age}} </td>
+
+
+
+        </tr>
+        {% endfor %}
+
+
+        </tbody>
+    </table>
+ </div>
+
+
+
+{% endblock %}

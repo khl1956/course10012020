@@ -1,0 +1,39 @@
+{% extends "index1.html" %}
+
+{% block content %}
+
+
+
+
+
+        <tbody>
+        {% for user in post %}
+        <tr>
+            <td> {{user.post_id }} </td>
+            <td> {{user.post_type}} </td>
+            <td> {{user.post_text}} </td>
+            <td> {{user.stud_id}} </td>
+            <td> {{user.disc_id}} </td>
+
+            <td>
+                    <a href="/edit_post/{{user.post_id }} " button type="button" class="btn btn-warning" name="btn_edit_client" data-user_id="{{user.post_id}}">Edit</a>
+
+
+
+                </td>
+        </tr>
+        {% endfor %}
+
+            <tr align="center" padding-top="100px">
+                <td>
+
+                <td> <a href="/discipline_view" button type="button"  name="btn_new_post">View all disciplines</a> </td>
+
+            </tr>
+
+
+
+        </tbody>
+
+
+{% endblock %}

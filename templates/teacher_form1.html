@@ -1,0 +1,66 @@
+
+
+{% extends "index.html" %}
+
+{% block content %}
+
+<!--https://www.codeply.com/go/nhbdi2FkJm-->
+
+
+<div class="col-md-6 mx-auto">
+
+    <!-- form card login -->
+    <div class="card rounded-0">
+
+        <div class="card-header">
+            <h3 class="mb-0">{{form_name}}</h3>
+        </div>
+        <div class="card-body">
+
+            <form class="form"   method = "POST" >
+                {{ form.hidden_tag() }}
+
+
+<div class="form-group">
+                {{ form.teacher_phone.label }}
+                {{ form.teacher_phone(class_="form-control") }}
+
+                {% if form.teacher_phone.errors%}
+                    <div class="alert alert-danger" role="alert">
+                        {% for message in form.teacher_phone.errors %}
+                             <div>{{ message }}</div>
+                        {% endfor %}
+                    </div>
+                {%endif%}
+            </div>
+
+            <div class="form-group">
+                {{ form.disc_id.label }}
+                {{ form.disc_id(class_="form-control") }}
+
+                {% if form.disc_id.errors%}
+                    <div class="alert alert-danger" role="alert">
+                        {% for message in form.disc_id.errors %}
+                             <div>{{ message }}</div>
+                        {% endfor %}
+                    </div>
+                {%endif%}
+            </div>
+
+
+
+                {{ form.submit(class_="btn btn-success") }}
+            </form>
+        </div>
+        <!--/card-block-->
+    </div>
+    <!-- /form card login -->
+
+</div>
+
+</div>
+
+
+
+
+{% endblock %}
