@@ -1,0 +1,38 @@
+.intro-2 {
+    background: url("https://miro.medium.com/max/4000/1*xqT6IyBaLLqfEyELtAGf9g.png")no-repeat center center;
+    background-size: cover;
+}
+
+.navbar {
+    background-color: transparent;
+}
+
+.rgba-purple-light, .rgba-purple-light:after {
+    background-color: rgba(49, 51, 48, 0.36470588235294116);
+}
+
+.btn-outline-primary {
+    color: #75DFC0 !important;
+    border-color: #75DFC0 !important;
+}
+
+.btn-outline-primary:hover .btn-outline-primary:active {
+    color: #20AD90 !important;
+    border-color: #20AD90 !important;
+}
+
+.top-nav-collapse {
+    background-color: #313330;
+}
+
+@media only screen and (max-width: 768px) {
+    .navbar {
+        background-color: #313330;
+    }
+}
+html,
+body,
+header,
+.view {
+    height: 100%;
+}

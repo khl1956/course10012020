@@ -1,0 +1,49 @@
+{% extends 'template.html' %}
+{% block title %}Learn easy!{% endblock %}
+{% block content %}
+    <div class="view intro-2" style="">
+        <div class="full-bg-img">
+            <div class="mask rgba-purple-light flex-center">
+                <div class="container text-center white-text wow fadeInUp">
+                    <h2>Learn with the bests</h2>
+                    <br>
+                    <h5>This is private resource</h5>
+                    <p></p>
+                    <br>
+                    <p></p>
+                    {% if user.is_authenticated %}
+                        <button type="button" class="btn btn-outline-primary btn-lg" onclick="location.assign('/dashboard')">JOIN</button>
+                    {% else %}
+                        <button type="button" class="btn btn-outline-primary btn-lg" data-toggle="modal" data-target="#exampleModalCenter">JOIN</button>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLongTitle">Modal title</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+        <form action="{{ url_for('auth.login') }}" method="post">
+          <div class="modal-body">
+                {{ form.hidden_tag() }}
+              <div class="form-group">
+                {{ form.email(placeholder='Email') }}
+                {{ form.password(placeholder='Password') }}
+              </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+              <button type="submit" class="btn btn-primary">Save changes</button>
+          </div>
+            </form>
+        </div>
+      </div>
+    </div>
+{% endblock %}

@@ -1,0 +1,66 @@
+{% extends 'template.html' %}
+{% block title %}Learn easy!{% endblock %}
+{% block content %}
+    <div class="container" style="margin-top: 100px">
+    <h1 style="margin-bottom: 48px">Here is all resources downloaded by you</h1>
+    <div class="table table-dark" style="padding: 16px">
+    <div class="row pb-3" style="align-items: center">
+                <div class="col">
+                    Resource name
+                </div>
+                <div class="col">
+                    Resource content
+                </div>
+                <div class="col">
+                    Resource source
+                </div>
+                <div class="col">
+                    Rating
+                </div>
+                <div class="col">
+                    Lection name
+                </div>
+                <div class="col">
+                    Edit
+                </div>
+                <div class="col">
+                    Delete
+                </div>
+              </div>
+      {% for resource in resources %}
+          <form action="{{ url_for('main.update_resource') }}" method="post">
+            {{ form.hidden_tag() }}
+              <div class="row pb-3" style="align-items: center">
+                <div class="col">
+                    {{ form.resource_name(value=resource.resource_name, class_="form-control") }}
+                </div>
+                <div class="col">
+                    {{ form.resource_content(value=resource.resource_content, class_="form-control") }}
+                </div>
+                <div class="col">
+                    {{ form.resource_source(value=resource.resource_source, class_="form-control") }}
+                </div>
+                <div class="col">
+                    {{ resource.rating }}
+                </div>
+                <div class="col">
+                    {{ form.lection_name(value=resource.lection_name, class_="form-control") }}
+                </div>
+                <div class="col">
+                    <button type="submit" class="btn btn-primary">Save</button>
+                </div>
+                <div class="col">
+                    <button type="button" class="btn btn-danger" onclick="remove('{{ resource.resource_name }}')">Delete</button>
+                </div>
+              </div>
+          </form>
+      {% endfor %}
+    </div>
+    </div>
+    <script>
+        function remove(resource_name) {
+            $.post('/resource/delete', {resource_name: resource_name});
+            location.reload();
+        }
+    </script>
+{% endblock %}

@@ -1,0 +1,24 @@
+{% extends 'template.html' %}
+{% block title %}Learn easy!{% endblock %}
+{% block content %}
+    <div class="container" style="margin-top: 100px">
+        <h1 style="margin-bottom: 48px">Choose subject to start study!</h1>
+    <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; grid-row-gap: 48px">
+        {% for subject in all_subjects %}
+            <div class="card" style="width: 18rem;">
+  <img src="https://picsum.photos/240/{{ 180 - range(-5, 5)|random }}"
+       class="card-img-top" alt="..." width="286" height="180">
+  <div class="card-body" style="background-color: #343a3f">
+      {% if subject in user_subjects %}
+            <h5 class="card-title">{{ subject.subject_name }}</h5><span class="badge badge-pill badge-success">This is your subject!</span>
+      {% else %}
+          <h5 class="card-title">{{ subject.subject_name }}</h5>
+      {% endif %}
+    <p class="card-text">We have {{ subject.lections|length }} lectures, which can help you to improve your {{ subject.subject_name }} skill</p>
+    <a href="/subject/{{ subject.subject_name }}" class="btn btn-info">Go and learn!</a>
+  </div>
+</div>
+        {% endfor %}
+    </div>
+    </div>
+{% endblock %}
