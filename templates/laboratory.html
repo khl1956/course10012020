@@ -1,0 +1,20 @@
+{% extends 'template.html' %}
+{% block title %}Learn easy!{% endblock %}
+{% block content %}
+    <div class="container" style="margin-top: 100px">
+        <h1 style="margin-bottom: 36px">Welcome to {{ subject_name }} laboratory page!</h1>
+        <p>For now we have {{ laboratory|length }} laboratory</p>
+        {% for lab in laboratory %}
+            <div class="card" style="margin-bottom: 24px">
+  <div class="card-header" style="background-color: #292C2F">
+    Laboratory #{{ lab.laboratory_number }}
+  </div>
+  <div class="card-body" style="background-color: #343a3f">
+    <h5 class="card-title">{{ lab.laboratory_theme }}</h5>
+    <p class="card-text">{{ lab.laboratory_manual }}</p>
+    <a href="/subject/{{ subject_name }}/laboratory/{{ lab.laboratory_number }}" class="btn btn-info">Get your task!</a>
+  </div>
+</div>
+        {% endfor %}
+    </div>
+{% endblock %}
