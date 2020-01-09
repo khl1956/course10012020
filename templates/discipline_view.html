@@ -1,0 +1,38 @@
+{% extends "index1.html" %}
+
+{% block content %}
+
+
+
+ <div class="table-responsive">
+    <table class="table">
+        <thead>
+            <tr>
+                <th scope="col">Номер дисципліни</th>
+                <th scope="col">Назва дисципліни</th>
+                <th scope="col">Вид дисципліни</th>
+                <th scope="col">Ім'я викладача</th>
+
+            </tr>
+        </thead>
+
+        <tbody>
+        {% for user in discipline %}
+        <tr>
+            <td> {{user.disc_id }} </td>
+            <td> {{user.disc_name }} </td>
+            <td> {{user.disc_type}} </td>
+            <td> {{user.teacher_fullname}} </td>
+
+
+
+        </tr>
+        {% endfor %}
+
+
+        </tbody>
+    </table>
+ </div>
+
+
+{% endblock %}

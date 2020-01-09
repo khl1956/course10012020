@@ -1,0 +1,37 @@
+{% extends "index1.html" %}
+
+{% block content %}
+
+
+
+ <div class="table-responsive">
+    <table class="table">
+        <thead>
+            <tr>
+                <th scope="col">Ім'я викладача</th>
+                <th scope="col">Телефон</th>
+                <th scope="col">Номер дисципліни</th>
+
+
+
+            </tr>
+        </thead>
+        
+        <tbody>
+        {% for user in teacher %}
+        <tr>
+            <td> {{user.teacher_fullname }} </td>
+            <td> {{user.teacher_phone }} </td>
+            <td> {{user.disc_id}} </td>
+
+
+        </tr>
+        {% endfor %}
+
+        
+        </tbody>
+    </table>
+ </div>
+
+
+{% endblock %}

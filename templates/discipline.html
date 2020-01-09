@@ -1,0 +1,43 @@
+{% extends "index2.html" %}
+
+{% block content %}
+
+
+
+ <div class="table-responsive">
+    <table class="table">
+        <thead>
+            <tr>
+                <th scope="col">Номер дисципліни</th>
+                <th scope="col">Назва дисципліни</th>
+                <th scope="col">Вид дисципліни</th>
+                <th scope="col">Ім'я викладача</th>
+
+            </tr>
+        </thead>
+        
+        <tbody>
+        {% for user in discipline %}
+        <tr>
+            <td> {{user.disc_id }} </td>
+            <td> {{user.disc_name }} </td>
+            <td> {{user.disc_type}} </td>
+             <td> {{user.teacher_fullname}} </td>
+
+
+                                 <td>
+                    <a href="/edit_discipline/{{user.disc_id }}" button type="button" class="btn btn-warning" name="btn_edit_user" >Edit</a>
+                    <a href="/delete_discipline/{{user.disc_id }}" button type="button" class="btn btn-danger" name="btn_delete_user" >Delete</a>
+                </td>
+        </tr>
+        {% endfor %}
+            <tr>
+                <td> <a href="/new_discipline" type="button" class="btn btn-success" name="btn_new_skill">New Discipline</a> </td>
+            </tr>
+        
+        </tbody>
+    </table>
+ </div>
+
+
+{% endblock %}
