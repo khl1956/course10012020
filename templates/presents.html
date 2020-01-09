@@ -1,0 +1,38 @@
+{% extends "index.html" %}
+
+{% block content %}
+
+
+
+ <div class="table-responsive">
+    <table class="table">
+        <thead>
+            <tr>
+                <th scope="col">present name</th>
+                <th scope="col">store name</th>
+                <th scope="col">count items</th>
+            </tr>
+        </thead>
+        
+        <tbody>
+        {% for user in presents %}
+        <tr>
+            <td> {{user.present_name }} </td>
+            <td> {{user.store_name}} </td>
+            <td> {{user.count_items}} </td>
+                                 <td>
+                    <a href="/edit_presents/{{user.present_name }}" button type="button" class="btn btn-warning" name="btn_edit_user" >Edit</a>
+                    <a href="/delete_presents/{{user.present_name }}" type="button" class="btn btn-danger" name="btn_delete_user" >Delete</a>
+                </td>
+        </tr>
+        {% endfor %}
+            <tr>
+                <td> <a href="/new_presents" type="button" class="btn btn-success" name="btn_new_skill">New Present</a> </td>
+            </tr>
+        
+        </tbody>
+    </table>
+ </div>
+
+
+{% endblock %}
