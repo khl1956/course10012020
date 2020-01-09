@@ -1,0 +1,37 @@
+
+
+{% extends "index.html" %}
+
+{% block content %}
+
+
+
+ <div class="table-responsive">
+    <table class="table">
+        <thead>
+            <tr>
+                <th scope="col">Function name</th>
+                <th scope="col">Iteration</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for function in form %}
+            <tr >
+                <td> {{function.function_name_fk}} </td>
+                <td> {{function.testcase_id}} </td>
+                <td>
+                    <button type="button" class="btn btn-success" name="btn_test_details" data-function_name="{{function.function_name_fk}}" data-testcase_id="{{function.testcase_id}}">Details</button>
+                </td>
+            </tr>
+
+        {% endfor %}
+<!--            <tr>-->
+<!--                <td> <button type="button" class="btn btn-success" name="btn_new_function">New Function</button> </td>-->
+<!--            </tr>-->
+        </tbody>
+    </table>
+ </div>
+
+    <script src="{{ url_for('static', filename='js/function.js') }}"></script>
+
+{% endblock %}

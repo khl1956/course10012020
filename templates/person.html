@@ -1,0 +1,50 @@
+
+
+{% extends "index.html" %}
+
+{% block content %}
+
+
+
+ <div class="table-responsive">
+    <table class="table">
+        <thead>
+            <tr>
+                <th scope="col">Person login</th>
+                <th scope="col">Person name</th>
+                <th scope="col">Person surname</th>
+                <th scope="col">Person email</th>
+                <th scope="col">Person birthday</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for person in persons %}
+            <tr >
+                <td> {{person.username}} </td>
+                <td> {{person.person_name}} </td>
+                <td> {{person.person_surname}} </td>
+                <td> {{person.email}} </td>
+                <td> {{person.person_birthday}} </td>
+                <td>
+                    <button type="button" class="btn btn-warning" name="btn_edit_person" data-person_login="{{person.username}}">Edit</button>
+
+
+                    {% if current_user.has_role('Admin') %}
+                        <button type="button" class="btn btn-danger" name="btn_delete_person" data-person_login="{{person.username}}">Delete</button>
+                        <button type="button" class="btn btn-danger" name="btn_ban_person" data-person_login="{{person.username}}">Ban</button>
+                    {% else %}
+                        <button type="button" class="btn btn-success" name="btn_new_function" data-person_login="{{person.username}}">New function</button>
+                    {% endif %}
+                </td>
+            </tr>
+        {% endfor %}
+            <tr>
+<!--                <td> <button type="button" class="btn btn-success" name="btn_new_person">New Person</button> </td>-->
+            </tr>
+        </tbody>
+    </table>
+ </div>
+
+    <script src="{{ url_for('static', filename='js/person.js') }}"></script>
+
+{% endblock %}
