@@ -6,26 +6,53 @@ import pandas as pd
 import numpy as np
 from sklearn.cluster import KMeans
 from math import e
+from datetime import datetime
 
 from flask import render_template, flash, request, redirect, session
+from flask_user import UserManager, login_required, roles_required, user_registered, current_user, user_logged_in
+
 from ORM import *
 from WTForms import *
 
 app.secret_key = 'development key'
+app.config['USER_APP_NAME'] = "E-rating-1-0"
+
+user_manager = UserManager(app, db, Users)
+
+
+@user_registered.connect_via(app)
+def _after_reg_hook(sender, user, **extra):
+    role_number = 1
+    if user.username[-3:] == "007":
+        role_number = 2
+    new_user_role = UserRoles(user_id=user.id, role_id=role_number)
+    db.session.add(new_user_role)
+    db.session.commit()
+
+
+@app.route('/', methods=['GET', 'POST'])
+def index():
+
+    return render_template('index.html')
 
 
 @app.route('/corr/<subj1>&<subj2>', methods=['GET', 'POST'])
+@login_required
 def corr(subj1, subj2):
 
     total_sheet1 = db.session.query(SubjectSheet.subj_name, SubjectSheet.study_book,
                                    db.func.sum(SubjectSheet.mark).label('total'))\
         .filter_by(subj_name=subj1)\
         .group_by(SubjectSheet.subj_name, SubjectSheet.study_book).all()
+    if len(total_sheet1) < 3:
+        return "The {} is studied by less than 3 students. It's meaningless to calculate correlation".format(subj1)
 
     total_sheet2 = db.session.query(SubjectSheet.subj_name, SubjectSheet.study_book,
                                    db.func.sum(SubjectSheet.mark).label('total'))\
         .filter_by(subj_name=subj2)\
         .group_by(SubjectSheet.subj_name, SubjectSheet.study_book).all()
+    if len(total_sheet2) < 3:
+        return "The {} is studied by less than 3 students. It's meaningless to calculate correlation".format(subj2)
 
     x = []
     for row in total_sheet1:
@@ -56,6 +83,7 @@ def corr(subj1, subj2):
 
 
 @app.route('/AI/<study_book>', methods=['GET', 'POST'])
+@login_required
 def predict(study_book):
 
     def y1(W, X, i, sigma=0.3):
@@ -93,6 +121,8 @@ def predict(study_book):
                 [55, 42, 11, 'bad'], [33, 42, 56, 'bad'],
                 [23, 60, 98, 'ok'], [60, 60, 60, 'ok'], [70, 70, 70, 'ok'],
                 [75, 90, 70, 'good'], [80, 90, 100, 'good'], [78, 98, 70, 'good'], [100, 75, 70, 'good']]
+    if len(PNN_data) < 5:
+        return "No classification till there are less than 5 students in the learning sample"
     Weights = np.transpose(np.array(PNN_data))
     Weights = np.delete(Weights, 3, 0)
     Weights = np.asfarray(Weights, float)
@@ -101,6 +131,7 @@ def predict(study_book):
 
 
 @app.route('/rating/<group_code>&<subj_name>', methods=['GET', 'POST'])
+@login_required
 def rating(group_code=None, subj_name=None):
 
     total_sheet = db.session.query(SubjectSheet.group_code, SubjectSheet.subj_name, SubjectSheet.study_book,
@@ -114,6 +145,7 @@ def rating(group_code=None, subj_name=None):
 
 
 @app.route('/cluster/<subj>', methods=['GET', 'POST'])
+@login_required
 def cluster(subj):
 
     select_result = db.session.query(SubjectSheet.study_book, db.func.sum(SubjectSheet.mark).label('total'))\
@@ -165,13 +197,9 @@ def cluster(subj):
     return render_template("cluster.html", graphJSON=graphJSON)
 
 
-@app.route('/', methods=['GET', 'POST'])
-def index():
-
-    return render_template('index.html')
-
-
 @app.route('/edit_group', methods = ['GET', 'POST'])
+@login_required
+@roles_required('Admin')
 def edit_group():
 
     form = GroupsForm()
@@ -192,6 +220,7 @@ def edit_group():
 
 
 @app.route('/groups', methods=['GET', 'POST'])
+@login_required
 def groups():
 
     form = GroupsForm()
@@ -227,6 +256,8 @@ def groups():
 
 
 @app.route('/edit_subject', methods=['GET', 'POST'])
+@login_required
+@roles_required('Admin')
 def edit_subject():
 
     form = SubjectsForm()
@@ -247,6 +278,7 @@ def edit_subject():
 
 
 @app.route('/subjects', methods=['GET', 'POST'])
+@login_required
 def subjects():
 
     form = SubjectsForm()
@@ -282,6 +314,8 @@ def subjects():
 
 
 @app.route('/edit_student', methods=['GET', 'POST'])
+@login_required
+@roles_required('Admin')
 def edit_student():
 
     form = StudentsForm()
@@ -308,6 +342,7 @@ def edit_student():
 
 
 @app.route('/students', methods=['GET', 'POST'])
+@login_required
 def students():
 
     form = StudentsForm()
@@ -350,8 +385,9 @@ def students():
 
 
 @app.route('/edit_subjectsheet', methods=['GET', 'POST'])
+@login_required
+@roles_required('Admin')
 def edit_subjectsheet():
-
     form = SubjectSheetForm()
     select_result = SubjectSheet.query.filter_by().all()
 
@@ -364,11 +400,31 @@ def edit_subjectsheet():
             selected_subj_name = selected_pk_data_list[0]
             selected_group_code = selected_pk_data_list[1]
             selected_spooky_book = selected_pk_data_list[2]
-            selected_date_of_mark = selected_pk_data_list[3]
+            selected_date_of_mark = datetime.strptime(selected_pk_data_list[3] + "_23:59:59", "%Y-%m-%d_%H:%M:%S").date()
             subjectsheet = SubjectSheet.query.filter_by(subj_name=selected_subj_name,
                                                         study_book=selected_spooky_book,
                                                         group_code=selected_group_code,
                                                         date_of_mark=selected_date_of_mark).first()
+
+            group_code, subject_name, date_of_mark = selected_group_code, selected_subj_name, selected_date_of_mark
+            year = date_of_mark.year
+            semester = 1 if date_of_mark.month in range(8, 12) or date_of_mark.month == 1 else 2
+            group_subject = GroupSubject(group_code=group_code, subj_name=subject_name, year=year, semester=semester)
+
+            group_subj_number = db.session.query(GroupSubject.group_code,
+                                   db.func.count(GroupSubject.subj_name).label('subjects_number'))\
+                                .filter_by(group_code=group_code)\
+                                .group_by(GroupSubject.group_code).first().subjects_number
+            if group_subj_number >= 10:
+                return render_template("subjectsheet.html", data=select_result, form=form)
+
+            happy_new_year = form.date_of_mark.data.year
+            new_semester = 1 if form.date_of_mark.data.month in range(8, 12) or form.date_of_mark.data.month == 1 else 2
+            group_subject.group_code = form.group_code.data
+            group_subject.subj_name = form.subj_name.data
+            group_subject.year = happy_new_year
+            group_subject.semester = new_semester
+
             subjectsheet.subj_name = form.subj_name.data
             subjectsheet.group_code = form.group_code.data
             subjectsheet.study_book = form.study_book.data
@@ -381,6 +437,7 @@ def edit_subjectsheet():
 
 
 @app.route('/subjectsheet', methods=['GET', 'POST'])
+@login_required
 def subjectsheet():
 
     form = SubjectSheetForm()
@@ -394,7 +451,7 @@ def subjectsheet():
             selected_subj_name = selected_pk_data[0]
             selected_group_code = selected_pk_data[1]
             selected_spooky_book = selected_pk_data[2]
-            selected_date_of_mark = selected_pk_data[3]
+            selected_date_of_mark = datetime.strptime(selected_pk_data[3] + "_23:59:59", "%Y-%m-%d_%H:%M:%S").date()
             selected_row = SubjectSheet.query.filter_by(subj_name=selected_subj_name, group_code=selected_group_code,
                                                     study_book=selected_spooky_book, date_of_mark=selected_date_of_mark).first()
             db.session.delete(selected_row)
@@ -408,7 +465,8 @@ def subjectsheet():
             selected_subj_name = selected_pk_data_list[0]
             selected_group_code = selected_pk_data_list[1]
             selected_spooky_book = selected_pk_data_list[2]
-            selected_date_of_mark = selected_pk_data_list[3]
+            print(selected_pk_data_list[3])
+            selected_date_of_mark = datetime.strptime(selected_pk_data_list[3] + "_23:59:59", "%Y-%m-%d_%H:%M:%S").date()
             selected_row = SubjectSheet.query.filter_by(subj_name=selected_subj_name,
                                                         study_book=selected_spooky_book,
                                                         group_code=selected_group_code,
@@ -421,8 +479,20 @@ def subjectsheet():
             flash('All fields are required.')
             return render_template('subjectsheet.html', data=select_result, form=form)
         else:
+            group_code, subject_name, date_of_mark = form.group_code.data, form.subj_name.data, form.date_of_mark.data
+            year = date_of_mark.year
+            semester = 1 if date_of_mark.month in range(8, 12) or date_of_mark.month == 1 else 2
+            group_subject = GroupSubject(group_code=group_code, subj_name=subject_name, year=year, semester=semester)
+            group_subj_number = db.session.query(GroupSubject.group_code,
+                                   db.func.count(GroupSubject.subj_name).label('subjects_number'))\
+                                .filter_by(group_code=form.group_code.data)\
+                                .group_by(GroupSubject.group_code).first().subjects_number
+            if group_subj_number >= 10:
+                flash('No more than 10 subjects for one group')
+                return render_template('subjectsheet.html', data=select_result, form=form)
             subjectsheet = SubjectSheet(form.subj_name.data, form.group_code.data, form.study_book.data,
                                         form.date_of_mark.data, form.mark.data)
+            db.session.add(group_subject)
             db.session.add(subjectsheet)
             db.session.commit()
             select_result.append(subjectsheet)
@@ -431,6 +501,7 @@ def subjectsheet():
 
 
 @app.route('/dashboard', methods=['GET', 'POST'])
+@login_required
 def dashboard():
 
     last_char = None

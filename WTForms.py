@@ -36,3 +36,11 @@ class SubjectSheetForm(Form):
     mark = FloatField("Mark: ", [validators.data_required("Please, enter the mark.")])
 
     submit = SubmitField("Enter")
+
+
+class UserForm(Form):
+
+    login = StringField("Login: ", [validators.data_required("Please, enter a login.")])
+    password = StringField("Password: ", [validators.data_required("Please, enter a password.")])
+
+    submit = SubmitField("Enter")

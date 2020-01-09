@@ -38,7 +38,9 @@
                   <div class="border p-1 m-1">
                       <form action = "/subjectsheet" method = post>
                           <p>
-                          {{row.subj_name, row.group_code, row.study_book, row.date_of_mark, row.mark}}
+                          {{row.subj_name, row.group_code, row.study_book,
+                              "{}-{}-{}".format(row.date_of_mark.year, row.date_of_mark.month, row.date_of_mark.day),
+                              row.mark}}
                             <button name="del" type="submit" class="mh-100 del" value="{{row.subj_name}}█{{row.group_code}}█{{row.study_book}}█{{row.date_of_mark}}">Delete</button>
                             <button name="edit" type="submit" class="mh-100 edit" value="{{row.subj_name}}█{{row.group_code}}█{{row.study_book}}█{{row.date_of_mark}}">Edit</button>
                           </p>

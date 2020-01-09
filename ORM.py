@@ -1,8 +1,12 @@
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
+from flask_user import UserMixin
 
 app = Flask(__name__)
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['SQLALCHEMY_DATABASE_URI'] = 'postgres://jvehmagztyojdu:50a71e72bae8b4452ef0fc0f4b527617df7f199870aa772fdfb91f743cfdd0a2@ec2-54-228-207-163.eu-west-1.compute.amazonaws.com:5432/d2fqinb643acpv'
+app.config['CSRF_ENABLED'] = True
+app.config['USER_ENABLE_EMAIL'] = False
 
 db = SQLAlchemy(app)
 
@@ -37,14 +41,14 @@ class Subjects(db.Model):
 
     def __repr__(self):
 
-        return 'Subject: name=%r' % self.name
+        return '<Subject: name=%r>' % self.name
 
 
 class StudentStatus(db.Model):
 
     __tablename__ = 'studentstatus'
-    group_code = db.Column('group_code', db.String(64), db.ForeignKey('students.group_code'), primary_key=True)
-    study_book = db.Column('study_book', db.String(64), db.ForeignKey('students.study_book'), primary_key=True)
+    group_code = db.Column('group_code', db.String(64), db.ForeignKey('students.group_code', ondelete='CASCADE'), primary_key=True)
+    study_book = db.Column('study_book', db.String(64), db.ForeignKey('students.study_book', ondelete='CASCADE'), primary_key=True)
     actual_date = db.Column('actual_date', db.String(64), primary_key=True)
     status = db.Column('status', db.String(64))
     destiny = db.Column('destiny', db.String(64))
@@ -70,11 +74,11 @@ class StudentStatus(db.Model):
 class SubjectSheet(db.Model):
 
     __tablename__ = 'subjectsheet'
-    subj_name = db.Column('subj_name', db.String(64), db.ForeignKey('subjects.name'), primary_key=True)
-    group_code = db.Column('group_code', db.String(64), db.ForeignKey('students.group_code'), primary_key=True)
-    study_book = db.Column('study_book', db.String(64), db.ForeignKey('students.study_book'), primary_key=True)
+    subj_name = db.Column('subj_name', db.String(64), db.ForeignKey('subjects.name', ondelete='CASCADE'), primary_key=True)
+    group_code = db.Column('group_code', db.String(64), db.ForeignKey('students.group_code', ondelete='CASCADE'), primary_key=True)
+    study_book = db.Column('study_book', db.String(64), db.ForeignKey('students.study_book', ondelete='CASCADE'), primary_key=True)
     date_of_mark = db.Column('date_of_mark', db.Date, primary_key=True)
-    mark = db.Column('mark', db.Float, nullable=False)
+    mark = db.Column('mark', db.Float(), nullable=False)
     student_group = db.relationship('Students', backref='sheet_group', lazy=True,
                               foreign_keys=[group_code])
     student_spook = db.relationship('Students', backref='sheet_spook', lazy=True,
@@ -97,10 +101,10 @@ class SubjectSheet(db.Model):
 class GroupSubject(db.Model):
 
     __tablename__ = 'group_subject'
-    group_code = db.Column('group_code', db.String(64), db.ForeignKey('groups.code'), primary_key=True)
-    subj_name = db.Column('subj_name', db.String(64), db.ForeignKey('subjects.name'), primary_key=True)
-    year = db.Column('year', db.Integer, primary_key=True)
-    semester = db.Column('semester', db.Integer, primary_key=True)
+    group_code = db.Column('group_code', db.String(64), db.ForeignKey('groups.code', ondelete='CASCADE'), primary_key=True)
+    subj_name = db.Column('subj_name', db.String(64), db.ForeignKey('subjects.name', ondelete='CASCADE'), primary_key=True)
+    year = db.Column('year', db.Integer(), primary_key=True)
+    semester = db.Column('semester', db.Integer(), primary_key=True)
 
     def __init__(self, group_code, subj_name, year, semester):
 
@@ -119,7 +123,7 @@ class SubjectsMarks(db.Model):
 
     __tablename__ = 'subjects_marks'
 
-    subj_name = db.Column('subj_name', db.String(64), db.ForeignKey('subjects.name'), primary_key=True)
+    subj_name = db.Column('subj_name', db.String(64), db.ForeignKey('subjects.name', ondelete='CASCADE'), primary_key=True)
     curr_max_mark = db.Column('curr_max_mark', db.String(64))
     actual_date = db.Column('actual_date', db.Date, primary_key=True)
 
@@ -141,7 +145,7 @@ class Students(db.Model):
     first_name = db.Column('first_name', db.String(64), nullable=False)
     last_name = db.Column('last_name', db.String(64), nullable=False)
     study_book = db.Column('study_book', db.String(64), primary_key=True)
-    group_code = db.Column('group_code', db.String(64), db.ForeignKey('groups.code'), primary_key=True)
+    group_code = db.Column('group_code', db.String(64), db.ForeignKey('groups.code', ondelete='CASCADE'), primary_key=True)
 
     def __init__(self, first_name, last_name, study_book, group_code):
 
@@ -154,3 +158,28 @@ class Students(db.Model):
 
         return '<Student: first_name=%r; last_name=%r; study_book=%r; group_code=%r>' % \
                self.first_name, self.last_name, self.study_book, self.group_code
+
+
+class Roles(db.Model):
+
+    __tablename__ = 'site_roles'
+    id = db.Column('id', db.Integer(), primary_key=True)
+    name = db.Column('name', db.String(64), nullable=False, unique=True)
+
+
+class Users(db.Model, UserMixin):
+
+    __tablename__ = 'users'
+    id = db.Column('id', db.Integer(), primary_key=True)
+    username = db.Column('username', db.String(64), nullable=False, unique=True)
+    password = db.Column('password', db.String(64), nullable=False, server_default='')
+    active = db.Column('active', db.Boolean(), nullable=False, server_default='0')
+    roles = db.relationship('Roles', secondary='user_roles', backref='user', lazy='dynamic')
+
+
+class UserRoles(db.Model):
+
+    __tablename__ = 'user_roles'
+    id = db.Column('id', db.Integer(), primary_key=True)
+    user_id = db.Column(db.Integer(), db.ForeignKey('users.id', ondelete='CASCADE'))
+    role_id = db.Column(db.Integer(), db.ForeignKey('site_roles.id', ondelete='CASCADE'))
