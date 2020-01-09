@@ -1,0 +1,39 @@
+{% extends "index.html" %}
+
+{% block content %}
+
+
+
+ <div class="table-responsive">
+    <table class="table">
+        <thead>
+            <tr>
+                <th scope="col">holiday name</th>
+                <th scope="col">season year</th>
+
+            </tr>
+        </thead>
+
+        <tbody>
+        {% for user in holidays %}
+        <tr>
+            <td> {{user.holiday_name }} </td>
+            <td> {{user.season_year}} </td>
+                         <td>
+                    <a href="/edit_holiday/{{user.holiday_name}}"  button type="button" class="btn btn-warning" name="btn_edit_holiday" data-holiday_name="{{user.holiday_name}}">Edit</a>
+                    <a href="/delete_holiday/{{user.holiday_name}}" button type="button" class="btn btn-danger" name="btn_delete_holiday" data-holiday_name="{{user.holiday_name}}">Delete</a>
+                </td>
+
+        </tr>
+        {% endfor %}
+                    <tr>
+                <td> <a href="/new_holiday" button type="button" class="btn btn-success" name="btn_new_holiday">New Holiday</a> </td>
+            </tr>
+
+        </tbody>
+    </table>
+ </div>
+
+
+
+{% endblock %}
