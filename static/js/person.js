@@ -32,3 +32,17 @@ $("button[name='btn_new_function']").click(function() {
     window.location = "new_function/"+$(this).data('person_login');
 
 });
+
+$("button[name='btn_ban']").click(function() {
+
+    window.location = "ban/"+$(this).data('person_login');
+
+});
+
+
+
+$("button[name='btn_unban']").click(function() {
+
+    window.location = "unban/"+$(this).data('person_login');
+
+});

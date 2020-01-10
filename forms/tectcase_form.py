@@ -7,7 +7,7 @@ class TestCaseForm(Form):
 
    testcase_id = StringField("Id: ",[
                                     validators.DataRequired("Please enter your id."),
-                                    validators.Length(3, 20, "Name should be from 3 to 20 symbols")
+                                    validators.Length(3, 20, "Id should be from 3 to 20 symbols")
                                  ])
 
    function_name_fk = HiddenField()

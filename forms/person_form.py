@@ -8,13 +8,13 @@ from wtforms import validators
 class PersonForm(Form):
 
     person_login = StringField("Login: ",[
-                                    validators.DataRequired("Please enter your Login."),
-                                    validators.Length(3, 20, "Name should be from 3 to 20 symbols")
+                                    validators.DataRequired("Please enter your login."),
+                                    validators.Length(3, 20, "Login should be from 3 to 20 symbols")
                                  ])
 
     person_password = PasswordField("Password: ",[
                                     validators.DataRequired("Please enter your password."),
-                                    validators.Length(3, 20, "Name should be from 3 to 20 symbols")
+                                    validators.Length(8, 20, "Password should be from 8 to 20 symbols")
                                  ])
 
     person_name = StringField("Name: ", [
@@ -24,7 +24,7 @@ class PersonForm(Form):
 
     person_surname = StringField("Surname: ",[
                                        validators.DataRequired("Please enter your surname."),
-                                       validators.Length(3, 20, "Name should be from 3 to 20 symbols")
+                                       validators.Length(3, 20, "Surname should be from 3 to 20 symbols")
                                    ])
 
 

@@ -31,7 +31,11 @@
 
                     {% if current_user.has_role('Admin') %}
                         <button type="button" class="btn btn-danger" name="btn_delete_person" data-person_login="{{person.username}}">Delete</button>
-                        <button type="button" class="btn btn-danger" name="btn_ban_person" data-person_login="{{person.username}}">Ban</button>
+                        {% if person.message %}
+                            <button type="button" class="btn btn-success" name="btn_unban" data-person_login="{{person.username}}">Unban</button>
+                        {% else %}
+                            <button type="button" class="btn btn-danger" name="btn_ban" data-person_login="{{person.username}}">Ban</button>
+                        {% endif %}
                     {% else %}
                         <button type="button" class="btn btn-success" name="btn_new_function" data-person_login="{{person.username}}">New function</button>
                     {% endif %}

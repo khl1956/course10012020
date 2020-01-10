@@ -22,12 +22,12 @@
   <ul class="navbar-nav" style="width: 100%;">
     <li class="nav-item"><a class="nav-link" href="/person">Person</a></li>
     <li class="nav-item"><a class="nav-link" href="/function">Function</a></li>
-    {% if current_user.has_role('Admin') %}
-      <li class="nav-item"><a class="nav-link" href="/testcase">Test Case</a></li>
-      <li class="nav-item"><a class="nav-link" href="/parameters">Parameters</a></li>
-      <li class="nav-item"><a class="nav-link" href="/result">Result</a></li>
+{#    {% if current_user.has_role('Admin') %}#}
+{#      <li class="nav-item"><a class="nav-link" href="/testcase">Test Case</a></li>#}
+{#      <li class="nav-item"><a class="nav-link" href="/parameters">Parameters</a></li>#}
+{#      <li class="nav-item"><a class="nav-link" href="/result">Result</a></li>#}
 <!--      <li class="nav-item"><a class="nav-link" href="/dashboard">Dashboard</a></li>-->
-    {% endif %}
+{#    {% endif %}#}
     {% if current_user.is_authenticated %}
       <li class="nav-item" style="margin-left: auto"><a class="nav-link" href="/login">{{current_user.username}}</a></li>
       <li class="nav-item"><a class="nav-link" href="/logout">Sign out</a></li>
@@ -40,7 +40,16 @@
 
 <div class="container">
 
-  {% block content %}<h1>Welcome page</h1>{% endblock %}
+
+    {% if current_user.has_role('Admin') %}
+        {% set stat = "Admin page" %}
+    {% elif current_user.has_role('Ban') %}
+        {% set stat = current_user.message %}
+    {% else %}
+        {% set stat = "Welcome page" %}
+    {% endif %}
+
+     {% block content %}<h1>{{ stat }}</h1>{% endblock %}
 
 </div>
 

@@ -3,30 +3,23 @@ from flask_sqlalchemy import SQLAlchemy
 from forms.person_form import PersonForm
 from forms.function_form import FunctionForm
 from forms.tectcase_form import TestCaseForm
-from forms.login_form import Login
+from forms.ban import BanForm
 from flask_security import RoleMixin, SQLAlchemyUserDatastore, Security, UserMixin, login_required, current_user
 from flask_security.utils import hash_password
-# from flask_user import roles_accepted, UserManager
 from flask_security.decorators import roles_accepted, roles_accepted
-# from sqlalchemy.sql import func
 import plotly
 import json
 import plotly.graph_objs as go
-# from werkzeug import secure_filename
 from random import randint
 import pandas as pd
 from sklearn.cluster import KMeans
 from sklearn.linear_model import LinearRegression
 from sklearn.preprocessing import StandardScaler
 import numpy as np
-
 from math import exp
 from random import uniform
 
-from neupy import algorithms
-
-# from dao.orm.model import *
-
+# from neupy import algorithms
 
 app = Flask(__name__)
 app.secret_key = 'key'
@@ -99,7 +92,7 @@ class Neuron_M:
         # sigma = sig
         delta_w = []
         for i in range(len(self.x)):
-            delta_w.append(self.x[i] * sigma * 0.1)
+            delta_w.append(self.x[i] * sigma )
             self.w[i] = self.w[i] + delta_w[i]
 
     def training(self, x):
@@ -135,7 +128,7 @@ class Neuron_U:
         sigma = self.y * (1 - self.y) * (y - self.y)
         delta_w = []
         for i in range(len(self.x)):
-            delta_w.append(self.x[i] * sigma * 0.1)
+            delta_w.append(self.x[i] * sigma )
             self.w[i] = self.w[i] + delta_w[i]
 
     def training(self, x):
@@ -163,9 +156,10 @@ class ormPersons(db.Model, UserMixin):
     password = db.Column(db.String(255), nullable=False)
     person_name = db.Column(db.String(50), nullable=False)
     person_surname = db.Column(db.String(50), nullable=False)
-    email = db.Column(db.String(100), nullable=True)
+    email = db.Column(db.String(100), nullable=False)
     person_birthday = db.Column(db.Date, nullable=False)
     active = db.Column(db.Boolean(), nullable=True)
+    message = db.Column(db.String(100), nullable=True)
 
     roles = db.relationship("Role", secondary=person_roles, backref=db.backref('persons', lazy='dynamic'))
 
@@ -288,7 +282,7 @@ def new():
                        password="0000",
                        person_name="Vadim",
                        person_surname="Pits",
-                       email=None,
+                       email="vadim@ukr.net",
                        person_birthday="1998-10-29"
                        )
 
@@ -297,7 +291,7 @@ def new():
                        password="0000",
                        person_name="Yarik",
                        person_surname="Artemenko",
-                       email=None,
+                       email="yarik@ukr.net",
                        person_birthday="1999-08-11"
                        )
 
@@ -306,7 +300,7 @@ def new():
                        password="0000",
                        person_name="Srhey",
                        person_surname="Gorodnuk",
-                       email=None,
+                       email="srhey@ukr.net",
                        person_birthday="1999-10-02"
                        )
 
@@ -317,6 +311,10 @@ def new():
 
     Us = Role(
         name="User"
+    )
+
+    Ban = Role(
+        name="Ban"
     )
 
     add = ormFunction(function_name="add",
@@ -344,7 +342,7 @@ def new():
                       counter_of_tests=10,
                       counter_of_params = 1)
 
-    Dima.Persons_Function.append(add)
+    Vlad.Persons_Function.append(add)
     Vlad.Persons_Function.append(sub)
     Vadim.Persons_Function.append(mult)
     Yarik.Persons_Function.append(div)
@@ -521,7 +519,7 @@ def new():
                         i_2, i_3, i_4, i_5, p_0i_1_1, p_1i_1_1, p_0i_2_1, p_1i_2_1, p_0i_3_1, p_1i_3_1, p_0i_4_1,
                         p_1i_4_1, p_0i_5_1,p_1i_5_1, p_0i_1_2, p_1i_1_2, p_0i_1_3, p_1i_1_3, p_0i_1_4, p_1i_1_4,
                         p_0i_1_5, iter_1_1, iter_1_2, iter_1_3, iter_1_4, iter_1_5, iter_2_1, iter_3_1, iter_4_1,
-                        iter_5_1])
+                        iter_5_1, Ban])
 
     db.session.commit()
 
@@ -630,7 +628,7 @@ def edit_person():
 def delete_person():
     person_login = request.form['person_login']
 
-    result = db.session.query(ormPersons).filter(ormPersons.person_login == person_login).one()
+    result = db.session.query(ormPersons).filter(ormPersons.username == person_login).one()
 
     db.session.delete(result)
     db.session.commit()
@@ -745,6 +743,7 @@ def edit_function():
         form.function_name.data = function.function_name
         form.function_text.data = function.function_text
         form.counter_of_tests.data = function.counter_of_tests
+        form.counter_of_params.data = function.counter_of_params
         form.person_login_fk.data = function.person_login_fk
 
         return render_template('function_form.html', form=form, form_name="Edit function", action="edit_function")
@@ -762,6 +761,8 @@ def edit_function():
             function.function_name = form.function_name.data
             function.function_text = form.function_text.data
             function.counter_of_tests = form.counter_of_tests.data
+            function.counter_of_params = form.counter_of_params.data
+
             function.person_login_fk = form.person_login_fk.data
 
             db.session.commit()
@@ -776,6 +777,24 @@ def delete_function():
     function_name = request.form['function_name']
 
     result = db.session.query(ormFunction).filter(ormFunction.function_name == function_name).one()
+    analiz = db.session.query(ormAnaliz).filter(ormAnaliz.function_name_fk == function_name).all()
+
+    for i in analiz:
+        db.session.delete(i)
+
+    id_list = db.session.query(ormTestCase.testcase_id).filter(ormTestCase.function_name_fk == function_name).all()
+
+    for i in id_list:
+        result3 = db.session.query(ormTestCase).filter(ormTestCase.testcase_id == i[0]).one()
+        result2 = db.session.query(ormResult).filter(ormResult.testcase_id == i[0]).all()
+        result1 = db.session.query(ormParameters).filter(ormParameters.testcase_id == i[0]).all()
+
+        for i in result1:
+            db.session.delete(i)
+        for i in result2:
+            db.session.delete(i)
+        db.session.delete(result3)
+        db.session.commit()
 
     db.session.delete(result)
     db.session.commit()
@@ -1056,6 +1075,62 @@ def correlation(function_name):
                            coef=reg.coef_[0],
                            coef1=reg.intercept_)
 
+
+@app.route('/ban/<person_login>', methods=['GET', 'POST'])
+@login_required
+@roles_accepted("Admin")
+def ban(person_login):
+    form = BanForm()
+
+    if request.method == 'POST':
+        if not form.validate():
+            return render_template('person_form.html', form=form, form_name="New person", action="new_person")
+        else:
+
+            per = db.session.query(ormPersons).filter(ormPersons.username == person_login).one()
+
+            id = per.roles[0].id
+
+            rol = db.session.query(Role).filter(Role.id == id).one()
+            ban = db.session.query(Role).filter(Role.id == 3).one()
+
+            per.roles.remove(rol)
+            per.roles.append(ban)
+
+
+            per.message = form.text.data
+            db.session.add(per)
+            db.session.commit()
+
+            return redirect(url_for('root'))
+
+    return render_template('ban_form.html', form=form, form_name="Ban", action="ban/"+person_login)
+
+
+@app.route('/unban/<person_login>', methods=['GET', 'POST'])
+@login_required
+@roles_accepted("Admin")
+def unban(person_login):
+
+    per = db.session.query(ormPersons).filter(ormPersons.username == person_login).one()
+
+    # id = per.roles[0].id
+
+    # rol = db.session.query(Role).filter(Role.id == id).one()
+    us = db.session.query(Role).filter(Role.id == 2).one()
+    bun = db.session.query(Role).filter(Role.id == 3).one()
+
+    per.roles.remove(bun)
+    per.roles.append(us)
+
+
+    per.message = None
+    db.session.add(per)
+    db.session.commit()
+
+    return redirect(url_for('person'))
+
+
 neuron_3_1 = Neuron_U(3)
 
 @app.route('/clustering/<function_name>', methods=['GET', 'POST'])
@@ -1128,7 +1203,7 @@ def claster(function_name, id=None):
                 ii_test_data_y.append([int(liste[iter][1])])
             else:
                 ii_test_data_x.append([int(liste[iter][0]), int(liste[iter][1])])
-                ii_test_data_y.append([int(liste[iter][1])])
+                ii_test_data_y.append([int(liste[iter][2])])
         iter += 1
     # print(kmeans.labels_)
     # print(kmeans.predict(np.array([test_list])))
@@ -1148,7 +1223,7 @@ def claster(function_name, id=None):
 
     x = ii_teach_data_x
 
-    for i in range(300000):
+    for i in range(500):
         ww = []
         print("Епоха " + str(i + 1))
         for j in range(len(x)):
@@ -1156,7 +1231,7 @@ def claster(function_name, id=None):
             y2 = [1]
             y3 = []
             # y = (x[j][0] + x[j][1]) / 100
-            y = (ii_teach_data_y[j][0])/100000
+            y = (ii_teach_data_y[j][0])/1000
             print("Итерация " + str(j + 1))
             y1.append(neuron_1_1.training(x[j]))
             if len(res2) != 0:
@@ -1184,7 +1259,7 @@ def claster(function_name, id=None):
         y2.append(neuron_2_2.training(y1))
         y2.append(neuron_2_3.training(y1))
         y3.append(neuron_3_1.training(y2))
-        ii_res_data_y.append(y3[0]*100000)
+        ii_res_data_y.append(y3[0]*1000)
 
 
 
@@ -1324,7 +1399,7 @@ def testing(function_name):
 
         new_result = ormResult(
             testcase_id= id,
-            testcase_iteration= params[2*i].testcase_iteration,
+            testcase_iteration= params[count*i].testcase_iteration,
             result_value=res
         )
         db.session.add(new_result)

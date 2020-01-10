@@ -21,7 +21,7 @@
         }
     </script>
 
-<table>
+<table class="table">
     <thead>
             <tr>
                 <th scope="col">params</th>
@@ -30,7 +30,7 @@
         </thead>
         <tbody>
         {% for i in range(train_x|length) %}
-            <tr >
+            <tr style="background-color: #34ce57">
                 <td> {% for k in train_x[i] %}
                         {{ k }} <br>
                     {% endfor %}
@@ -39,16 +39,16 @@
             </tr>
         {% endfor %}
         {% for i in range(test_x|length) %}
-            <tr >
+            <tr style="background-color: #f1b0b7">
                 <td> {% for k in test_x[i] %}
                         {{ k }} <br>
                     {% endfor %}
                 </td>
-                <td> {{ train_y[i][0]}} </td>
+                <td> {{ test_y[i][0]}} </td>
             </tr>
         {% endfor %}
         {% for i in range(test_x|length) %}
-            <tr >
+            <tr style="background-color: #ffe8a1">
                 <td> {% for k in test_x[i] %}
                         {{ k }} <br>
                     {% endfor %}
