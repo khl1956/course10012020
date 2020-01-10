@@ -81,7 +81,6 @@ prompt-toolkit==2.0.10
 protobuf==3.11.1
 psycopg2==2.8.4
 PuLP==2.0
-py3minepi==0.0.1.1
 pyasn1==0.4.8
 pyasn1-modules==0.2.7
 PyAutoGUI==0.9.47
