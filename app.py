@@ -229,7 +229,7 @@ class ormAnaliz(db.Model):
 
 
 user_datastore = SQLAlchemyUserDatastore(db, ormPersons, Role)
-security = Security(app, user_datastore)
+# security = Security(app, user_datastore)
 # user_manager = UserManager(app, db, ormPersons)
 
 
