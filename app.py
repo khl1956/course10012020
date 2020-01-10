@@ -30,7 +30,7 @@ app.config['USER_EMAIL_SENDER_EMAIL'] = "noreply@example.com"
 
 
 
-ENV = 'dev'
+ENV = 'devvv'
 
 if ENV == 'dev':
     app.debug = True
@@ -38,7 +38,7 @@ if ENV == 'dev':
 else:
     app.debug = False
     app.config[
-        'SQLALCHEMY_DATABASE_URI'] = 'postgres://qetwjnfqiutblk:19ad6e8a3dacc995a1cf58797d7ba9ebb7c87aff87ca42765ae0e74c76be79fe@ec2-174-129-33-147.compute-1.amazonaws.com:5432/d7b3m6ti6n1c4q'
+        'SQLALCHEMY_DATABASE_URI'] = 'postgres://szmzlvhzrdaukh:296d273e5ce10e9637645d6fee54be067ed9f9b342877a87fa9fc3be23e30784@ec2-54-243-208-234.compute-1.amazonaws.com:5432/degcmpf6t5n46b'
 
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
