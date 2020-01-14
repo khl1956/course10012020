@@ -1,0 +1,41 @@
+
+
+{% extends "index.html" %}
+
+{% block content %}
+
+
+
+ <div class="table-responsive">
+    <table class="table">
+        <thead>
+            <tr>
+                <th scope="col">Parameters index</th>
+                <th scope="col">Testcase iteration</th>
+                <th scope="col">Parameters value</th>
+                <th scope="col">Testcase type</th>
+                <th scope="col">Testcase id</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for parameter in parameters %}
+            <tr >
+                <td> {{parameter.parameters_index}} </td>
+                <td> {{parameter.testcase_iteration}} </td>
+                <td> {{parameter.parameters_value}} </td>
+                <td> {{parameter.testcase_type}} </td>
+                <td> {{parameter.testcase_id}} </td>
+                <td>  </td>
+            </tr>
+
+        {% endfor %}
+<!--            <tr>-->
+<!--                <td> <button type="button" class="btn btn-success" name="btn_new_function">New Function</button> </td>-->
+<!--            </tr>-->
+        </tbody>
+    </table>
+ </div>
+
+    <script src="{{ url_for('static', filename='js/function.js') }}"></script>
+
+{% endblock %}

@@ -1,0 +1,47 @@
+
+
+{% extends "index.html" %}
+
+{% block content %}
+
+
+
+ <div class="table-responsive">
+    <table class="table">
+        <thead>
+            <tr>
+                <th scope="col">Function name</th>
+                <th scope="col">Parameters value</th>
+                <th scope="col">Result value</th>
+            </tr>
+        </thead>
+        <tbody>
+{#        {% set vars = namespace(name = " ") %}#}
+        {% for function in form %}
+            <tr>
+                <td> {{function[0]}} </td>
+
+                <td>
+                {% for value in function[2] %}
+                     {{ value[0] }} <br>
+                {% endfor %}
+                </td>
+                <td> {{function[1]}} </td>
+                <td>
+<!--                    <button type="button" class="btn btn-warning" name="btn_edit_function" data-function_name="{{function.function_name}}">Edit</button>-->
+<!--                    <button type="button" class="btn btn-danger" name="btn_delete_function" data-function_name="{{function.function_name}}">Delete</button>-->
+<!--                    <button type="button" class="btn btn-success" name="btn_new_testcase" data-function_name="{{function.function_name}}">New test case</button>-->
+                </td>
+            </tr>
+
+        {% endfor %}
+<!--            <tr>-->
+<!--                <td> <button type="button" class="btn btn-success" name="btn_new_function">New Function</button> </td>-->
+<!--            </tr>-->
+        </tbody>
+    </table>
+ </div>
+
+    <script src="{{ url_for('static', filename='js/function.js') }}"></script>
+
+{% endblock %}
